@@ -1,35 +1,79 @@
-import {createSlice} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import axios from "axios";
+import {v4 as uuidv4} from "uuid";
+
+export const fetchTasks = createAsyncThunk(
+    "tasks/fetchTask",
+    async (userId) => {
+        try {
+            const response = await axios.get(`https://jsonplaceholder.typicode.com/todos?userId=${userId}`);
+            return response.data;
+        } catch (error) {
+            console.error("Error fetching todo tasks:", error);
+        }
+    }
+);
+
+export const addTasks = createAsyncThunk(
+    "tasks/addTask",
+    async (task) => {
+        try {
+            const response = await axios.post(`https://jsonplaceholder.typicode.com/todos`, task);
+            return response.data;
+        } catch (error) {
+            console.error("Error adding task:", error);
+        }
+    }
+);
+
+export const deleteTask = createAsyncThunk(
+    "tasks/deleteTask",
+    async (taskId) => {
+        try {
+            await axios.delete(`https://jsonplaceholder.typicode.com/todos/${taskId}`);
+            return {id: taskId};
+        } catch (error) {
+            console.error("Error deleting task:", error);
+        }
+    }
+);
+
+export const updateTask = createAsyncThunk(
+    "tasks/updateTask",
+    async (task) => {
+        try {
+            const response = await axios.put(`https://jsonplaceholder.typicode.com/todos/${task.id}`, task);
+            return response.data;
+        } catch (error) {
+            console.error("Error updating task:", error);
+        }
+    }
+);
+
 
 const taskSlice = createSlice({
     name: 'task',
     initialState: {
-        userId: '',
-        id: 2,
+        userId: 1,
         title: '',
         completed: false,
-        tasks: [
-            {
-                "userId": 1,
-                "id": 1,
-                "title": "delectus aut autem",
-                "completed": false
-            }
-        ]
+        tasks: [],
+        requestStatus: 'idle'
     },
     reducers: {
         setTitleValue(state, action) {
             state.title = action.payload
         },
         add(state, action) {
-            state.id = state.id + 1
-            state.userId = 1
-            state.tasks.push({
+            const maxId = Math.max(...state.tasks.map(task => Number(task.id)), 0);
+            const newTask = {
                 userId: state.userId,
-                id: state.id,
+                id: maxId + 1,
                 title: state.title,
                 completed: state.completed
-            })
-            state.title = ''
+            };
+            state.tasks.push(newTask);
+            state.title = '';
         },
         reset(state, action) {
             state.tasks = []
@@ -52,8 +96,27 @@ const taskSlice = createSlice({
                 }
                 return task
             })
+        },
+        setUserId(state, action) {
+            state.userId = action.payload
         }
+    },
+    extraReducers: (builder) => {
+        builder.addCase(fetchTasks.fulfilled, (state, action) => {
+            state.tasks = action.payload
+        }),
+        builder.addCase(fetchTasks.pending, (state, action) => {
+            state.requestStatus = 'pending'
+        }),
+        builder.addCase(deleteTask.fulfilled, (state, action) => {
+            state.tasks = state.tasks.filter(task => task.id !== action.payload.id);
+        }),
+        builder.addCase(updateTask.fulfilled, (state, action) => {
+            const index = state.tasks.findIndex(task => task.id === action.payload.id);
+            state.tasks[index] = action.payload;
+        });
     }
+
 })
 
 export const {
@@ -62,7 +125,8 @@ export const {
     reset,
     remove,
     setCompleted,
-    changeTitle
+    changeTitle,
+    setUserId
 } = taskSlice.actions
 
 export default taskSlice.reducer;

@@ -1,9 +1,27 @@
 import './Task.css'
 import { useDispatch } from "react-redux";
-import { remove,changeTitle, setCompleted } from "../../store/Slice/taskSlice.js";
+import { changeTitle, setCompleted, updateTask, deleteTask } from "../../store/Slice/taskSlice.js";
 
 function Task({ task }) {
     const dispatch = useDispatch();
+
+    const handleUpdateTaskStatus = () => {
+        dispatch(setCompleted({ id: task.id, completed: !task.completed }));
+        dispatch(updateTask({ ...task, completed: !task.completed }));
+    }
+
+    const handleDeleteTask = () => {
+        dispatch(deleteTask(task.id));
+    }
+
+    const handleUpdateTaskTitle = () => {
+        const newTitle = prompt('Enter new title');
+        console.log(task);
+        if (newTitle) {
+            dispatch(changeTitle({ id: task.id, title: newTitle }));
+            dispatch(updateTask({ ...task, title: newTitle }));
+        }
+    }
 
     return (
         <tr key={task.id}>
@@ -13,17 +31,12 @@ function Task({ task }) {
                 <input
                     type="checkbox"
                     checked={task.completed}
-                    onChange={() => dispatch(setCompleted({ id: task.id, completed: !task.completed }))}
+                    onChange={handleUpdateTaskStatus}
                 />
             </td>
             <td>
-                <button className={'btn delete-btn'} onClick={() => dispatch(remove(task.id))}>Delete</button>
-                <button className={'btn modify-btn'}  onClick={() => {
-                    const newTitle = prompt('Enter new title');
-                    if (newTitle) {
-                        dispatch(changeTitle({ id: task.id, title: newTitle }));
-                    }
-                }}>Modify</button>
+                <button className={'btn delete-btn'} onClick={handleDeleteTask}>Delete</button>
+                <button className={'btn modify-btn'}  onClick={handleUpdateTaskTitle}>Modify</button>
             </td>
         </tr>
     );

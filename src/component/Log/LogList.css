@@ -1,0 +1,36 @@
+.log-container {
+    text-align: left;
+    background-color: #242424;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    margin-top: auto;
+}
+
+.log-header {
+    border-top: 1px solid #757575;
+    border-bottom: 1px solid #757575;
+    padding: 0.4rem;
+}
+
+.log-list {
+    height: 200px;
+    list-style: none;
+    margin: 0;
+    overflow: scroll;
+    padding: 1rem;
+}
+
+.logs-btn {
+    top: 0;
+    background-color: #1a1a1a;
+    border: 1px solid #757575;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.7em;
+    font-weight: 400;
+    padding: 0.2em 1.2em;
+    transition: border-color 0.25s;
+}
