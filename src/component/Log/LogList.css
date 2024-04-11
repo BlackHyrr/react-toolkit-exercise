@@ -20,6 +20,7 @@
     margin: 0;
     overflow: scroll;
     padding: 1rem;
+    resize: vertical;
 }
 
 .logs-btn {

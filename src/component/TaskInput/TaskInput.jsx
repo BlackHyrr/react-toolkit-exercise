@@ -1,6 +1,7 @@
 import { useDispatch } from "react-redux";
 import './TaskInput.css'
 import { add, addTasks, reset, setTitleValue } from "../../store/Slice/taskSlice";
+import toast from 'react-hot-toast';
 
 const TaskInput = () => {
     const dispatch = useDispatch()
@@ -10,8 +11,14 @@ const TaskInput = () => {
     }
 
     const handleAddTask = () => {
-        dispatch(add())
-        dispatch(addTasks())
+        dispatch(add());
+        dispatch(addTasks()).then((action) => {
+            if (addTasks.fulfilled.match(action)) {
+                toast.success('Task added successfully');
+            } else if (addTasks.rejected.match(action)) {
+                toast.error('Error adding task');
+            }
+        });
     }
 
     return (

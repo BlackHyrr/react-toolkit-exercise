@@ -1,6 +1,7 @@
 import './Task.css'
 import { useDispatch } from "react-redux";
 import { changeTitle, setCompleted, updateTask, deleteTask } from "../../store/Slice/taskSlice.js";
+import toast from 'react-hot-toast';
 
 function Task({ task }) {
     const dispatch = useDispatch();
@@ -11,16 +12,39 @@ function Task({ task }) {
     }
 
     const handleDeleteTask = () => {
-        dispatch(deleteTask(task.id));
+        dispatch(deleteTask(task.id)).then((action) => {
+            if (deleteTask.fulfilled.match(action)) {
+                toast.success('Task deleted successfully');
+            } else if (deleteTask.rejected.match(action)) {
+                toast.error('Error deleting task');
+            }
+        });
     }
 
     const handleUpdateTaskTitle = () => {
-        const newTitle = prompt('Enter new title');
-
-        if (newTitle) {
-            dispatch(changeTitle({ id: task.id, title: newTitle }));
-            dispatch(updateTask({ ...task, title: newTitle }));
+        const newTitle = prompt('Enter new title', task.title);
+        if(newTitle === null) {
+            toast.error('Invalid title');
+            return;
         }
+        if(newTitle === '') {
+            toast.error('Title cannot be empty');
+            return;
+        }
+        if(newTitle === task.title) {
+            toast('Title is same as previous');
+            return;
+        }
+
+        dispatch(changeTitle({ id: task.id, title: newTitle }));
+        dispatch(updateTask({ ...task, title: newTitle }))
+            .then((action) => {
+                if (updateTask.fulfilled.match(action)) {
+                    toast.success('Task updated successfully');
+                } else if (updateTask.rejected.match(action)) {
+                    toast.error('Error updating task');
+                }
+            });
     }
 
     return (

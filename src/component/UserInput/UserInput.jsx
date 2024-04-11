@@ -12,6 +12,7 @@ const UserInput = () => {
     }, [dispatch]);
 
     const handleChange = (e) => {
+        if(e.target.value === '') return;
         dispatch(setUserId(e.target.value))
         dispatch(fetchTasks(e.target.value))
     }

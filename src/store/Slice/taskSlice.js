@@ -1,12 +1,12 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
-import {v4 as uuidv4} from "uuid";
 
 export const fetchTasks = createAsyncThunk(
     "tasks/fetchTask",
     async (userId) => {
         try {
             const response = await axios.get(`https://jsonplaceholder.typicode.com/todos?userId=${userId}`);
+            await new Promise(resolve => setTimeout(resolve, 1000));
             return response.data;
         } catch (error) {
             console.error("Error fetching todo tasks:", error);
@@ -19,9 +19,11 @@ export const addTasks = createAsyncThunk(
     async (task) => {
         try {
             const response = await axios.post(`https://jsonplaceholder.typicode.com/todos`, task);
+            console.log('response', response)
             return response.data;
         } catch (error) {
             console.error("Error adding task:", error);
+            return rejectWithValue(error.message);
         }
     }
 );
@@ -34,6 +36,7 @@ export const deleteTask = createAsyncThunk(
             return {id: taskId};
         } catch (error) {
             console.error("Error deleting task:", error);
+            return rejectWithValue(error.message);
         }
     }
 );
@@ -46,6 +49,7 @@ export const updateTask = createAsyncThunk(
             return response.data;
         } catch (error) {
             console.error("Error updating task:", error);
+            return rejectWithValue(error.message);
         }
     }
 );
@@ -103,10 +107,14 @@ const taskSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(fetchTasks.fulfilled, (state, action) => {
-            state.tasks = action.payload
+            state.tasks = action.payload,
+            state.requestStatus = 'fulfilled'
         }),
         builder.addCase(fetchTasks.pending, (state, action) => {
             state.requestStatus = 'pending'
+        }),
+        builder.addCase(fetchTasks.rejected, (state, action) => {
+            state.requestStatus = 'rejected'
         }),
         builder.addCase(deleteTask.fulfilled, (state, action) => {
             state.tasks = state.tasks.filter(task => task.id !== action.payload.id);
