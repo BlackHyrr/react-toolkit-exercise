@@ -8,7 +8,7 @@ const TaskList = () => {
 
 
     return (
-        <div>
+        <div className={'tasklist-container'}>
             <table>
                 <thead>
                     <tr>

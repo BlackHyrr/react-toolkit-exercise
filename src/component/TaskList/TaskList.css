@@ -2,4 +2,48 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 2rem;
+}
+
+.tasklist-container {
+  position: relative;
+}
+
+.loading-widget {
+  width: 56px;
+  height: 56px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateX(calc(-100% - 3px));
+}
+
+.widget-red {
+  color: red;
+}
+
+.loading-widget {
+  width: 56px;
+  height: 56px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateX(calc(-100% - 15px));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+}
+
+.loading-widget i {
+  animation: rotate 1.5s infinite linear;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
   }
+  100% {
+    transform: rotate(360deg);
+  }
+}

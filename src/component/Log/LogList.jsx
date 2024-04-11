@@ -12,8 +12,6 @@ const LogList = () => {
         setIsLogVisible(!isLogVisible);
     }
 
-    console.log(logs);
-
     return (
         <div className={'log-container'}>
             <div className={'log-header'}>

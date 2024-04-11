@@ -16,7 +16,7 @@ function Task({ task }) {
 
     const handleUpdateTaskTitle = () => {
         const newTitle = prompt('Enter new title');
-        console.log(task);
+
         if (newTitle) {
             dispatch(changeTitle({ id: task.id, title: newTitle }));
             dispatch(updateTask({ ...task, title: newTitle }));
