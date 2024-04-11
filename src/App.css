@@ -1,0 +1,103 @@
+#root {
+  max-width: 1280px;
+  width: 80%;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+
+h1 {
+  text-align: center;
+}
+
+input[type='text'] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2rem;
+}
+
+table, th, td {
+  border: 1px solid #ddd;
+}
+
+th, td {
+  text-align: left;
+  padding: 15px;
+}
+
+th {
+  background-color: #4c74af;
+  color: white;
+}
+
+th:nth-child(2), td:nth-child(2) {
+  width: 1%;
+  white-space: nowrap;
+}
+
+th:nth-child(3), td:nth-child(3) {
+  width: 1%;
+  white-space: nowrap;
+}
+
+th:last-child, td:last-child {
+  width: 1%;
+  white-space: nowrap;
+}
+
+.btn {
+  margin-right: 10px;
+  padding: 5px 13px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+}
+
+.add-btn {
+  background-color: #4CAF50;
+}
+
+.delete-btn {
+  background-color: #f44336;
+}
+
+.modify-btn {
+  background-color: #008CBA;
+}
+
+.reset-btn {
+  background-color: #f44336;
+}
